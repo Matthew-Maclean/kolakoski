@@ -5,6 +5,10 @@ authors = ["Matthew M. <myself123@live.com>"]
 
 description = "Kolakoski sequence iterator"
 
+documentation = "https://docs.rs/kolakoski"
+homepage = "https://github.com/Matthew-Maclean/kolakoski"
+repository = "https://github.com/Matthew-Maclean/kolakoski"
+
 readme = "README.md"
 license = "MIT"
 
