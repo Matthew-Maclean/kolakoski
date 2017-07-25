@@ -3,6 +3,11 @@ name = "kolakoski"
 version = "0.1.0"
 authors = ["Matthew M. <myself123@live.com>"]
 
+description = "Kolakoski sequence iterator"
+
+readme = "README.md"
+license = "MIT"
+
 [dependencies]
 num = {version = "0.1.4", optional = true}
 
