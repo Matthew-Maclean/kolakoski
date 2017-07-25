@@ -1,4 +1,7 @@
-#![no_std]
+#[cfg_attr(not(feature = "num-traits"), no_std)]
+
+#[cfg(feature = "num-traits")]
+extern crate num;
 
 #[cfg(test)]
 mod test;
@@ -12,6 +15,7 @@ mod test;
 /// This sequence is self-refrential, and the implementation is recursive.
 /// Attempts to get a large number of items from the sequence may overflow
 /// the stack, depending on the machine. Use with caution!
+#[cfg(all(feature = "default", not(feature = "num-traits")))]
 pub struct Kolakoski
 {
     run: usize,
@@ -19,6 +23,15 @@ pub struct Kolakoski
     is_one: bool,
 }
 
+#[cfg(feature = "num-traits")]
+pub struct Kolakoski<N>
+{
+    run: usize,
+    run_length: N,
+    is_one: bool,
+}
+
+#[cfg(all(feature = "default", not(feature = "num-traits")))]
 impl Kolakoski
 {
     /// Creates a new Kolakoski iterator
@@ -33,6 +46,22 @@ impl Kolakoski
     }
 }
 
+#[cfg(feature = "num-traits")]
+impl<N: Num> Kolakoski<N>
+{
+    /// Creates a new Kolakoski iterator
+    pub fn new() -> Kolakoski<N>
+    {
+        Kolakoski
+        {
+            run: 0,
+            run_length: N::one(),
+            is_one: true,
+        }
+    }
+}
+
+#[cfg(all(feature = "default", not(feature = "num-traits")))]
 impl Iterator for Kolakoski
 {
     type Item = u8;
@@ -79,6 +108,60 @@ impl Iterator for Kolakoski
         else
         {
             Some(2)
+        }
+    }
+}
+
+#[cfg(feature = "num-traits")]
+use num::traits::Num;
+
+#[cfg(feature = "num-traits")]
+impl<N: Num + Clone> Iterator for Kolakoski<N>
+{
+    type Item = N;
+
+    fn next(&mut self) -> Option<Self::Item>
+    {
+        if self.run_length == N::zero()
+        {
+            self.is_one = !self.is_one;
+            self.run += 1;
+
+            if self.run == 1
+            {
+                self.run_length = N::one() + N::one()
+            }
+            else
+            {
+                // store current status (don't bother with run_length, because we will chage it)
+                let run = self.run;
+                let is_one = self.is_one;
+
+                // reset the status of the Iterator
+                self.run = 0;
+                self.is_one = true;
+                self.run_length = N::one();
+
+                // get the run length for the current run
+                // If you want too many items from the sequence, you will overflow the stack!
+                let run_length = self.nth(run).unwrap();
+
+                // re-set (not reset!) the status, including the new run_length value
+                self.run = run;
+                self.run_length = run_length;
+                self.is_one = is_one;
+            }
+        }
+
+        self.run_length = self.run_length.clone() - N::one();
+
+        if self.is_one
+        {
+            Some(N::one())
+        }
+        else
+        {
+            Some(N::add(N::one(), N::one()))
         }
     }
 }
