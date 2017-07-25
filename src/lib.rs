@@ -3,6 +3,15 @@
 #[cfg(test)]
 mod test;
 
+/// An Iterator that returns numbers from the Kolakoski sequence
+///
+/// Information about the Kolakoski sequence and the first 108 numbers
+/// can be found at https://oeis.org/A000002. The source of the numbers
+/// used for testing in `test.rs` is also https://oeis.org/A000002.
+///
+/// This sequence is self-refrential, and the implementation is recursive.
+/// Attempts to get a large number of items from the sequence may overflow
+/// the stack, depending on the machine. Use with caution!
 pub struct Kolakoski
 {
     run: usize,
@@ -12,6 +21,7 @@ pub struct Kolakoski
 
 impl Kolakoski
 {
+    /// Creates a new Kolakoski iterator
     pub fn new() -> Kolakoski
     {
         Kolakoski
@@ -50,6 +60,7 @@ impl Iterator for Kolakoski
                 self.run_length = 1;
 
                 // get the run length for the current run
+                // If you want too many items from the sequence, you will overflow the stack!
                 let run_length = self.nth(run).unwrap();
 
                 // re-set (not reset!) the status, including the new run_length value
