@@ -3,6 +3,7 @@ fn sequence()
 {
     use super::Kolakoski;
 
+    // source: https://oeis.org/A000002
     let expected: [u8; 100] = [
         1, 2, 2, 1, 1, 2, 1, 2, 2, 1,
         2, 2, 1, 1, 2, 1, 1, 2, 2, 1,
