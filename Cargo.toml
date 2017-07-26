@@ -1,6 +1,6 @@
 [package]
 name = "kolakoski"
-version = "1.0.1"
+version = "2.0.0"
 authors = ["Matthew M. <myself123@live.com>"]
 
 description = "Kolakoski sequence iterator"
