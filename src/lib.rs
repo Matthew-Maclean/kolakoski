@@ -15,7 +15,6 @@ mod test;
 /// This sequence is self-refrential, and the implementation is recursive.
 /// Attempts to get a large number of items from the sequence may overflow
 /// the stack, depending on the machine. Use with caution!
-#[cfg(all(feature = "default", not(feature = "num-traits")))]
 pub struct Kolakoski
 {
     run: usize,
@@ -24,14 +23,13 @@ pub struct Kolakoski
 }
 
 #[cfg(feature = "num-traits")]
-pub struct Kolakoski<N>
+pub struct KolakoskiNum<N>
 {
     run: usize,
     run_length: N,
     is_one: bool,
 }
 
-#[cfg(all(feature = "default", not(feature = "num-traits")))]
 impl Kolakoski
 {
     /// Creates a new Kolakoski iterator
@@ -47,12 +45,12 @@ impl Kolakoski
 }
 
 #[cfg(feature = "num-traits")]
-impl<N: Num> Kolakoski<N>
+impl<N: Num> KolakoskiNum<N>
 {
     /// Creates a new Kolakoski iterator
-    pub fn new() -> Kolakoski<N>
+    pub fn new() -> KolakoskiNum<N>
     {
-        Kolakoski
+        KolakoskiNum
         {
             run: 0,
             run_length: N::one(),
@@ -61,7 +59,6 @@ impl<N: Num> Kolakoski<N>
     }
 }
 
-#[cfg(all(feature = "default", not(feature = "num-traits")))]
 impl Iterator for Kolakoski
 {
     type Item = u8;
@@ -100,7 +97,7 @@ impl Iterator for Kolakoski
 use num::traits::Num;
 
 #[cfg(feature = "num-traits")]
-impl<N: Num + Clone> Iterator for Kolakoski<N>
+impl<N: Num + Clone> Iterator for KolakoskiNum<N>
 {
     type Item = N;
 
@@ -117,7 +114,7 @@ impl<N: Num + Clone> Iterator for Kolakoski<N>
             }
             else
             {
-                self.run_length = Kolakoski::new().nth(self.run).unwrap();
+                self.run_length = KolakoskiNum::<N>::new().nth(self.run).unwrap();
             }
         }
 
@@ -129,7 +126,7 @@ impl<N: Num + Clone> Iterator for Kolakoski<N>
         }
         else
         {
-            Some(N::add(N::one(), N::one()))
+            Some(N::one() + N::one())
         }
     }
 }
