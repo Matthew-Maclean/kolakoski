@@ -12,7 +12,7 @@ mod test;
 /// can be found at https://oeis.org/A000002. The source of the numbers
 /// used for testing in `test.rs` is also https://oeis.org/A000002.
 ///
-/// This sequence is self-refrential, and the implementation is recursive.
+/// This sequence is self-referential, and the implementation is recursive.
 /// Attempts to get a large number of items from the sequence may overflow
 /// the stack, depending on the machine. Use with caution!
 pub struct Kolakoski
