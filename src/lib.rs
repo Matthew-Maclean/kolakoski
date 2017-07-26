@@ -79,23 +79,7 @@ impl Iterator for Kolakoski
             }
             else
             {
-                // store current status (don't bother with run_length, because we will chage it)
-                let run = self.run;
-                let is_one = self.is_one;
-
-                // reset the status of the Iterator
-                self.run = 0;
-                self.is_one = true;
-                self.run_length = 1;
-
-                // get the run length for the current run
-                // If you want too many items from the sequence, you will overflow the stack!
-                let run_length = self.nth(run).unwrap();
-
-                // re-set (not reset!) the status, including the new run_length value
-                self.run = run;
-                self.run_length = run_length;
-                self.is_one = is_one;
+                self.run_length = Kolakoski::new().nth(self.run).unwrap();
             }
         }
 
@@ -133,23 +117,7 @@ impl<N: Num + Clone> Iterator for Kolakoski<N>
             }
             else
             {
-                // store current status (don't bother with run_length, because we will chage it)
-                let run = self.run;
-                let is_one = self.is_one;
-
-                // reset the status of the Iterator
-                self.run = 0;
-                self.is_one = true;
-                self.run_length = N::one();
-
-                // get the run length for the current run
-                // If you want too many items from the sequence, you will overflow the stack!
-                let run_length = self.nth(run).unwrap();
-
-                // re-set (not reset!) the status, including the new run_length value
-                self.run = run;
-                self.run_length = run_length;
-                self.is_one = is_one;
+                self.run_length = Kolakoski::new().nth(self.run).unwrap();
             }
         }
 
